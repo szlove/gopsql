@@ -33,7 +33,7 @@ func main() {
 		panic(err)
 	}
 	defer tx.Rollback()
-	newBook := &Book{"my book"})
+	newBook := &Book{Name: "my book"})
 	if err := newBook.Create(); err != nil {
 		panic(err)
 	}
@@ -43,7 +43,7 @@ func main() {
 }
 
 type Book struct {
-	name string
+	Name string
 }
 
 const createBook = `INSERT INTO books (name) VALUES ($1);`
