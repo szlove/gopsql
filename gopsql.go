@@ -39,23 +39,6 @@ func Conn(connectionURL *ConnectionURL) (*sql.DB, error) {
 	return db, nil
 }
 
-// Transaction method example.
-//
-// - Set
-//     func (t *Transaction) CreateUser() error { /*code*/ }
-//
-// - Use
-//     tx, err := psql.NewTransaction()
-//     if err != nil {
-//         return err
-//     }
-//     defer tx.Rollback()
-//     if err := tx.Tx.CreateUser(); err != nil {
-//         return err
-//     }
-//     if err := tx.Commit(); err != nil {
-//         return err
-//     }
 type Transaction struct {
 	Tx  *sql.Tx
 	Ctx context.Context
