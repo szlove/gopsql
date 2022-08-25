@@ -13,17 +13,17 @@ var (
 )
 
 type ConnectionURL struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	DBName   string
-	SSLMode  string
+	host     string
+	port     string
+	user     string
+	password string
+	dbname   string
+	sslmode  string
 }
 
 func (c *ConnectionURL) gen() string {
 	url := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		c.Host, c.Port, c.User, c.Password, c.DBName, c.SSLMode)
+		c.host, c.port, c.user, c.password, c.dbname, c.sslmode)
 	return url
 }
 
