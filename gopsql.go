@@ -58,14 +58,18 @@ func Conn(connectionURL *ConnectionURL) (*sql.DB, error) {
 //     }
 type Transaction struct {
 	Tx  *sql.Tx
-	Ctx context.Context
+	ctx context.Context
 }
 
-func NewTransaction() (*Transaction, error) {
+func NewTransaction(opts *sql.TxOptions) (*Transaction, error) {
 	ctx := context.Background()
-	tx, err := postgres.BeginTx(ctx, nil)
+	tx, err := postgres.BeginTx(ctx, opts)
 	return &Transaction{tx, ctx}, err
 }
 
 func (t *Transaction) Rollback() error { return t.Tx.Rollback() }
 func (t *Transaction) Commit() error   { return t.Tx.Commit() }
+
+func (t *Transaction) ExecContext(query string, args ...interface{}) (result sql.Result, err error) {
+	return t.Tx.ExecContext(t.Ctx, query, args...)
+}
