@@ -48,7 +48,7 @@ type Book struct {
 
 const createBook = `INSERT INTO books (name) VALUES ($1);`
 
-func (b *Book) Create(t *gopsql.Transaction, newBook &Book) error {
+func (b *Book) Create(t *gopsql.Transaction, newBook *Book) error {
 	return t.Tx.ExecContext(t.Ctx, createBook, newBook.Name)
 }
 ```
