@@ -28,7 +28,7 @@ func main() {
 	defer psql.Close()
 	
 	// Transaction
-	tx, err := gopsql.NewTransaction()
+	tx, err := gopsql.NewTransaction(nil)
 	if err != nil {
 		panic(err)
 	}
@@ -48,8 +48,7 @@ type Book struct {
 
 const createBook = `INSERT INTO books (name) VALUES ($1);`
 
-func (b *Book) Create(tx *gopsql.Transaction, newBook &Book) error {
-	err := tx.ExecContext(tx.Ctx, newBook.Name)
-	return err
+func (b *Book) Create(t *gopsql.Transaction, newBook &Book) error {
+	return t.Tx.ExecContext(t.Ctx, createBook, newBook.Name)
 }
 ```

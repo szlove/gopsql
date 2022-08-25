@@ -58,7 +58,7 @@ func Conn(connectionURL *ConnectionURL) (*sql.DB, error) {
 //     }
 type Transaction struct {
 	Tx  *sql.Tx
-	ctx context.Context
+	Ctx context.Context
 }
 
 func NewTransaction(opts *sql.TxOptions) (*Transaction, error) {
@@ -69,7 +69,3 @@ func NewTransaction(opts *sql.TxOptions) (*Transaction, error) {
 
 func (t *Transaction) Rollback() error { return t.Tx.Rollback() }
 func (t *Transaction) Commit() error   { return t.Tx.Commit() }
-
-func (t *Transaction) ExecContext(query string, args ...interface{}) (result sql.Result, err error) {
-	return t.Tx.ExecContext(t.Ctx, query, args...)
-}
