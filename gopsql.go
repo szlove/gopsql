@@ -21,14 +21,14 @@ type ConnectionURL struct {
 	SSLMode  string
 }
 
-func (c *ConnectionURL) Gen() string {
+func (c *ConnectionURL) gen() string {
 	url := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		c.Host, c.Port, c.User, c.Password, c.DBName, c.SSLMode)
 	return url
 }
 
 func Conn(connectionURL *ConnectionURL) (*sql.DB, error) {
-	db, err := sql.Open("postgres", connectionURL.Gen())
+	db, err := sql.Open("postgres", connectionURL.gen())
 	if err != nil {
 		return nil, errors.Wrap(err, "sql.Open()")
 	}
