@@ -1,7 +1,7 @@
-package main
+package gopsql
 
 import "fmt"
 
-func main() {
-	fmt.Println("init")
+func Test() {
+	fmt.Println("test")
 }
