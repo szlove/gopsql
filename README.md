@@ -14,12 +14,12 @@ import (
 func main() {
 	// DB Connection
 	url := gopsql.ConnectionURL{
-		host: "localhost",
-		port: "5432",
-		user: "example",
-		password: "example1234",
-		dbname:   "exampleDB",
-		sslmode:  "disable",
+		Host: "localhost",
+		Port: "5432",
+		User: "example",
+		Password: "example1234",
+		DBName:   "exampleDB",
+		SSLMode:  "disable",
 	}
 	psql, err := gopsql.Conn(url)
 	if err != nil {
