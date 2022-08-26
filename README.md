@@ -28,16 +28,16 @@ func main() {
 	defer psql.Close()
 	
 	// Transaction
-	tx, err := gopsql.NewTransaction(nil)
+	t, err := gopsql.NewTransaction(nil)
 	if err != nil {
 		panic(err)
 	}
-	defer tx.Rollback()
+	defer t.Rollback()
 	newBook := &Book{Name: "my book"})
-	if err := newBook.Create(); err != nil {
+	if err := newBook.Create(t); err != nil {
 		panic(err)
 	}
-	if err := tx.Commit(); err != nil {
+	if err := t.Commit(); err != nil {
 		panic(err)
 	}
 }
