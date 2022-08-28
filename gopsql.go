@@ -25,7 +25,7 @@ func (c *ConnectionURL) gen() string {
 
 var Conns = make(map[string]*sql.DB)
 
-func Conn(connectionName string, connectionURL *ConnectionURL) error {
+func Conn(connectionKey string, connectionURL *ConnectionURL) error {
 	db, err := sql.Open("postgres", connectionURL.gen())
 	if err != nil {
 		return errors.Wrap(err, "sql.Open()")
@@ -33,7 +33,7 @@ func Conn(connectionName string, connectionURL *ConnectionURL) error {
 	if err := db.Ping(); err != nil {
 		return errors.Wrap(err, "db.Ping()")
 	}
-	Conns[connectionName] = db
+	Conns[connectionKey] = db
 	return nil
 }
 
@@ -42,8 +42,8 @@ type Transaction struct {
 	Ctx context.Context
 }
 
-func NewTransaction(connectionName string, opts *sql.TxOptions) (*Transaction, error) {
-	conn, ok := Conns[connectionName]
+func NewTransaction(connectionKey string, opts *sql.TxOptions) (*Transaction, error) {
+	conn, ok := Conns[connectionKey]
 	if !ok {
 		return nil, errors.New("Connection not found.")
 	}
