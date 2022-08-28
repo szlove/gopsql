@@ -8,10 +8,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-var (
-	postgres *sql.DB
-)
-
 type ConnectionURL struct {
 	Host     string
 	Port     string
@@ -27,16 +23,18 @@ func (c *ConnectionURL) gen() string {
 	return url
 }
 
-func Conn(connectionURL *ConnectionURL) (*sql.DB, error) {
+var Conns = make(map[string]*sql.DB)
+
+func Conn(connectionName string, connectionURL *ConnectionURL) error {
 	db, err := sql.Open("postgres", connectionURL.gen())
 	if err != nil {
-		return nil, errors.Wrap(err, "sql.Open()")
+		return errors.Wrap(err, "sql.Open()")
 	}
 	if err := db.Ping(); err != nil {
-		return nil, errors.Wrap(err, "db.Ping()")
+		return errors.Wrap(err, "db.Ping()")
 	}
-	postgres = db
-	return db, nil
+	Conns[connectionName] = db
+	return nil
 }
 
 type Transaction struct {
@@ -44,9 +42,13 @@ type Transaction struct {
 	Ctx context.Context
 }
 
-func NewTransaction(opts *sql.TxOptions) (*Transaction, error) {
+func NewTransaction(connectionName string, opts *sql.TxOptions) (*Transaction, error) {
+	conn, ok := Conns[connectionName]
+	if !ok {
+		return nil, errors.New("Connection not found.")
+	}
 	ctx := context.Background()
-	tx, err := postgres.BeginTx(ctx, opts)
+	tx, err := conn.BeginTx(ctx, opts)
 	return &Transaction{tx, ctx}, err
 }
 
