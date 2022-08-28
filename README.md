@@ -21,14 +21,12 @@ func main() {
 		DBName:   "exampleDB",
 		SSLMode:  "disable",
 	}
-	psql, err := gopsql.Conn(url)
-	if err != nil {
+	if err := gopsql.Conn("myConn", url); err != nil {
 		panic(err)
 	}
-	defer psql.Close()
 	
 	// Transaction
-	t, err := gopsql.NewTransaction(nil)
+	t, err := gopsql.NewTransaction("myConn", nil)
 	if err != nil {
 		panic(err)
 	}
