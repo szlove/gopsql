@@ -9,6 +9,7 @@ package main
 
 import (
 	"github.com/szlove/gopsql"
+	_ "github.com/lib/pq"
 )
 
 func main() {
